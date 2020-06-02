@@ -1,0 +1,13 @@
+{
+    "CharData": [
+        {
+            "ElementID": 1,
+            "name": "puk",
+            "maxHP": 10,
+            "damage": 1,
+            "setBuff": 10,
+            "trueBuff": 0.10000000149011612,
+            "initiative": 14
+        }
+    ]
+}

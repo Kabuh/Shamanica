@@ -1,0 +1,68 @@
+{
+  "CharData": [
+    {
+		"ElementID": 11,
+      "name": "fire",
+      "maxHP": 80,
+      "damage": 5,
+	  "buff": 20,
+      "initiative": 80
+    },
+    {
+		"ElementID": 21,
+      "name": "water",
+      "maxHP": 100,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 60
+    },
+    {
+		"ElementID": 31,
+      "name": "air",
+      "maxHP": 120,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 70
+    },
+    {
+		"ElementID": 41,
+      "name": "earth",
+      "maxHP": 200,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 10
+    },
+    {
+		"ElementID": 51,
+      "name": "tree",
+      "maxHP": 200,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 30
+    },
+    {
+		"ElementID": 61,
+      "name": "blood",
+      "maxHP": 200,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 55
+    },
+    {
+		"ElementID": 71,
+      "name": "energy",
+      "maxHP": 200,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 90
+    },
+    {
+		"ElementID": 81,
+      "name": "void",
+      "maxHP": 200,
+      "damage": 15,
+	  "buff": 20,
+      "initiative": 5
+    }
+  ]
+}
