@@ -18,10 +18,12 @@ public static class AIHandler
         float lowestEnemyHealthPartition;
         Hero lowestHealthEnemy;
         float lowestFriendHealthPartition;
-        Hero lowestHealthFriend;
+        Hero friendThatNeedsBuff;
 
-        checkPartition(enemyList, out lowestEnemyHealthPartition, out lowestHealthEnemy);
-        checkPartition(allyList, out lowestFriendHealthPartition, out lowestHealthFriend);
+        CheckPartition(enemyList, out lowestEnemyHealthPartition, out lowestHealthEnemy);
+        CheckPartition(allyList, out lowestFriendHealthPartition, out friendThatNeedsBuff);
+        
+
 
         List<Hero> targets;
 
@@ -31,8 +33,19 @@ public static class AIHandler
             AIhero.Attack(targets);
         }
         else {
-            MakeBuffZone(AIhero, lowestHealthFriend, out targets);
-            AIhero.Buff(targets);
+            if (friendThatNeedsBuff.hasHPBuff)
+            {
+                CheckBuff(allyList, out friendThatNeedsBuff);
+            }
+
+            if (friendThatNeedsBuff != null) {
+                MakeBuffZone(AIhero, friendThatNeedsBuff, out targets);
+                AIhero.Buff(targets);
+            } else
+            {
+                MakeAttackZone(AIhero, lowestHealthEnemy, out targets, enemyList);
+                AIhero.Attack(targets);
+            }
         }
     }
 
@@ -77,7 +90,7 @@ public static class AIHandler
         targets.Add(AIallies.GetSlotByCoord(2, place).myHero);
     }
 
-    static void checkPartition(List<Hero> list, out float partition, out Hero hero) {
+    static void CheckPartition(List<Hero> list, out float partition, out Hero hero) {
         float lowestHealthPartition = 101.0f;
         partition = lowestHealthPartition;
         hero = null;
@@ -87,6 +100,17 @@ public static class AIHandler
             if (lowestHealthPartition < partition)
             {
                 partition = lowestHealthPartition;
+                hero = item;
+            }
+        }
+    }
+
+    static void CheckBuff(List<Hero> list, out Hero hero)
+    {
+        hero = null;
+        foreach (Hero item in list)
+        {
+            if (item.hasHPBuff) {
                 hero = item;
             }
         }

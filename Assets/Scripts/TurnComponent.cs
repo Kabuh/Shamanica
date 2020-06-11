@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TurnComponent : MonoBehaviour
 {
@@ -18,13 +19,15 @@ public class TurnComponent : MonoBehaviour
     public BattleGrid TeamTwoGrid;
 
     List<Hero> PlayerList;
-    List<Hero> AIList;
+    public  List<Hero> AIList;
 
     public List<Hero> turnList = new List<Hero>();
 
     Hero currentTurnHero;
-    int classTurnCounter =0;
+    int classTurnCounter = 0;
 
+    public GameObject gameOverTextGO;
+    TextMeshProUGUI gameOverText;
 
     public int[] AllyIDHeroList = new int[8];
     public int[] EnemyIDHeroList = new int[8];
@@ -49,6 +52,8 @@ public class TurnComponent : MonoBehaviour
 
         PlayerList = new List<Hero>();
         AIList = new List<Hero>();
+
+        gameOverText = gameOverTextGO.GetComponent<TextMeshProUGUI>();
     }
 
     //spawns character gameobjects on allready created slot-grids for both team
@@ -130,6 +135,13 @@ public class TurnComponent : MonoBehaviour
     //dafault game turn behaviour
     public void MakeGameTurn() {
 
+        //placeholder for battle ending
+        if (PlayerList.Count == 0 || AIList.Count == 0)
+        {
+            gameOverTextGO.SetActive(true);
+            return;
+        }
+
         currentTurnHero = turnList[classTurnCounter];
         CurrentTurnIndicator.SetActive(true);
         Vector3 indicatorSetter = currentTurnHero.gameObject.transform.position;
@@ -151,6 +163,9 @@ public class TurnComponent : MonoBehaviour
             {
                 classTurnCounter = 0;
             }
+
+            
+
             MakeGameTurn();
         }
     }

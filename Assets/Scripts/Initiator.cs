@@ -14,7 +14,6 @@ public class Initiator : MonoBehaviour
 
     public GameObject Game;
 
-
     void Start()
     {
         if (StatLibraryIO.Instance.readComplete) {
@@ -30,6 +29,5 @@ public class Initiator : MonoBehaviour
             TurnComponent.Instance.PreGameSetup();
             TurnComponent.Instance.MakeGameTurn();
         }
-        
     }
 }
