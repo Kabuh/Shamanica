@@ -13,7 +13,7 @@ public class Slot : MonoBehaviour
     public Affiliation side;
 
     public BattleGrid myGrid;
-    public Hero myHero;
+    public Hero myHero = null;
 
     bool filled;
 

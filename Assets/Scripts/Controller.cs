@@ -45,7 +45,6 @@ public class Controller : MonoBehaviour
     //    Input.GetMouseButtonDown(0).AddListener
     //}
 
-
     void Awake()
     {
         #region Singleton
@@ -118,9 +117,6 @@ public class Controller : MonoBehaviour
         }
     }
 
-
-
-    
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) {

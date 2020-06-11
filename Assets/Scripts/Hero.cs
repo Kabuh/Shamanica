@@ -55,7 +55,7 @@ public abstract class Hero : MonoBehaviour
     public abstract void Buff(List<Hero> targets);
 
     public void Death() {
-        TurnComponent.Instance.turnList.Remove(this);
+        TurnComponent.Instance.PurgeFromList(this);
         mySlot.myHero = null;
         Destroy(this.gameObject);
         

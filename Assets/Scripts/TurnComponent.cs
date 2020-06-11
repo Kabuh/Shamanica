@@ -17,14 +17,17 @@ public class TurnComponent : MonoBehaviour
     public BattleGrid TeamOneGrid;
     public BattleGrid TeamTwoGrid;
 
+    List<Hero> PlayerList;
+    List<Hero> AIList;
+
     public List<Hero> turnList = new List<Hero>();
 
     Hero currentTurnHero;
     int classTurnCounter =0;
 
 
-    public int[] AllyHeroList = new int[8];
-    public int[] EnemyHeroList = new int[8];
+    public int[] AllyIDHeroList = new int[8];
+    public int[] EnemyIDHeroList = new int[8];
 
     private void Awake()
     {
@@ -43,19 +46,28 @@ public class TurnComponent : MonoBehaviour
         for (int index = 0; index < HeroIDs.Count; index++) {
             elementDict.Add(HeroIDs[index], CharPrefabs[index]);
         }
+
+        PlayerList = new List<Hero>();
+        AIList = new List<Hero>();
     }
 
     //spawns character gameobjects on allready created slot-grids for both team
     public void PreGameSetup() {
-        SpawnChars(AllyHeroList, TeamOneGrid);
-        SpawnChars(EnemyHeroList, TeamTwoGrid);
+        
+        SpawnChars(AllyIDHeroList, TeamOneGrid, out PlayerList);
+        SpawnChars(EnemyIDHeroList, TeamTwoGrid, out AIList);
         SortLists();
+
+        AIHandler.AIallies = TeamTwoGrid;
+        AIHandler.AIenemies = TeamOneGrid;
+
     }
 
     Quaternion heroSpawnRotation = new Quaternion();
     
     //func about how to spawn characters based on array of IDs
-    void SpawnChars(int[] IDsArray, BattleGrid currentGrid) {
+    void SpawnChars(int[] IDsArray, BattleGrid currentGrid, out List<Hero> list) {
+        list = new List<Hero>();
         int currentHeroID;
 
         heroSpawnRotation = CharPrefab.transform.rotation;
@@ -74,6 +86,7 @@ public class TurnComponent : MonoBehaviour
                 currentHero.Initiate();
                 currentHero.mySlot = currentGrid.Slots[index];
                 currentGrid.Slots[index].myHero = currentHero;
+                list.Add(currentHero);
                 turnList.Add(currentHero);
             }
         }
@@ -110,22 +123,35 @@ public class TurnComponent : MonoBehaviour
                     tempList.Add(item);
                 }
             }
-            
         }
         return tempList;
     }
 
     //dafault game turn behaviour
-    //no AI so far
     public void MakeGameTurn() {
-        CurrentTurnIndicator.SetActive(true);
+
         currentTurnHero = turnList[classTurnCounter];
+        CurrentTurnIndicator.SetActive(true);
         Vector3 indicatorSetter = currentTurnHero.gameObject.transform.position;
         CurrentTurnIndicator.transform.position = new Vector3(indicatorSetter.x, 2, indicatorSetter.z);
+        
 
-        classTurnCounter++;
-        if (classTurnCounter >= turnList.Count) {
-            classTurnCounter = 0;
+        if (currentTurnHero.mySlot.side == Affiliation.Ally) {
+            classTurnCounter++;
+            if (classTurnCounter >= turnList.Count)
+            {
+                classTurnCounter = 0;
+            }
+        } else 
+        {
+            AIHandler.ChooseBehaviour(currentTurnHero, AIList, PlayerList);
+
+            classTurnCounter++;
+            if (classTurnCounter >= turnList.Count)
+            {
+                classTurnCounter = 0;
+            }
+            MakeGameTurn();
         }
     }
 
@@ -141,9 +167,20 @@ public class TurnComponent : MonoBehaviour
             else {
                 currentTurnHero.Attack(Controller.Instance.ChosenHeroes);
             }
-
             MakeGameTurn();
         }
     }
 
+    public void PurgeFromList(Hero hero) {
+
+        turnList.Remove(hero);
+        if (hero.mySlot.side == Affiliation.Ally)
+        {
+            PlayerList.Remove(hero);
+        }
+        else
+        {
+            AIList.Remove(hero);
+        }
+    }
 }
