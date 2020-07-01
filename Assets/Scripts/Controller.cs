@@ -12,7 +12,7 @@ public class Controller : MonoBehaviour
 
     public GameObject teamOneSlotmaker;
     public GameObject teamTwoSlotmaker;
-    SlotMaker currentSlotmaker;
+    SlotPlacer currentSlotmaker;
     MeshRenderer currentMaterial;
 
     public GameObject selector;
@@ -22,7 +22,7 @@ public class Controller : MonoBehaviour
     List<Slot> chosenSlots = new List<Slot>();
     public List<Hero> ChosenHeroes = new List<Hero>();
 
-    Dictionary <Affiliation, SlotMaker> rulerDict = new Dictionary<Affiliation, SlotMaker>();
+    Dictionary <Affiliation, SlotPlacer> rulerDict = new Dictionary<Affiliation, SlotPlacer>();
 
     Ray ray;
     int direction = 1;
@@ -37,13 +37,6 @@ public class Controller : MonoBehaviour
         }
     }
 
-    // is there a solution to make it event instead of Update?
-
-    //private Button mousebutton; 
-    //private void Start()
-    //{
-    //    Input.GetMouseButtonDown(0).AddListener
-    //}
 
     void Awake()
     {
@@ -59,8 +52,8 @@ public class Controller : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         #endregion
 
-        rulerDict.Add(Affiliation.Ally, teamOneSlotmaker.GetComponent<SlotMaker>());
-        rulerDict.Add(Affiliation.Enemy, teamTwoSlotmaker.GetComponent<SlotMaker>());
+        rulerDict.Add(Affiliation.Ally, teamOneSlotmaker.GetComponent<SlotPlacer>());
+        rulerDict.Add(Affiliation.Enemy, teamTwoSlotmaker.GetComponent<SlotPlacer>());
     }
 
     //method that handles how targets are chosen and how to visualise it 

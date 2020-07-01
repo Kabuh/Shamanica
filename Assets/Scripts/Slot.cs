@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
-    public float xWorldPos;
-    public float zWorldPos;
+    public float XworldPos;
+    public float ZworldPos;
 
     public int myRow;
     public int myPlace;
@@ -15,12 +15,10 @@ public class Slot : MonoBehaviour
     public BattleGrid myGrid;
     public Hero myHero = null;
 
-    bool filled;
-
-    public void Setup()
+    private void Awake()
     {
-        xWorldPos = this.gameObject.transform.position.x;
-        zWorldPos = this.gameObject.transform.position.z;
+        XworldPos = this.gameObject.transform.position.x;
+        ZworldPos = this.gameObject.transform.position.z;
     }
 
     private void OnMouseOver()

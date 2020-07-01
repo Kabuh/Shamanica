@@ -64,15 +64,16 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Affiliation.cs" />
     <Compile Include="Assets\Scripts\AIHandler.cs" />
+    <Compile Include="Assets\Scripts\AnimationsFX.cs" />
     <Compile Include="Assets\Scripts\BattleGrid.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Elementals\AbilityTraits.cs" />
     <Compile Include="Assets\Scripts\Elementals\FireElemental.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
-    <Compile Include="Assets\Scripts\Initiator.cs" />
     <Compile Include="Assets\Scripts\SelectorEvents.cs" />
     <Compile Include="Assets\Scripts\Slot.cs" />
-    <Compile Include="Assets\Scripts\SlotMaker.cs" />
+    <Compile Include="Assets\Scripts\SlotPlacer.cs" />
     <Compile Include="Assets\Scripts\StatLibraryIO.cs" />
     <Compile Include="Assets\Scripts\StatTable.cs" />
     <Compile Include="Assets\Scripts\TurnComponent.cs" />

@@ -4,7 +4,7 @@
 		"ElementID": 11,
       "name": "fire",
       "maxHP": 80,
-      "damage": 5,
+      "damage": 30,
 	  "buff": 20,
       "initiative": 80
     },

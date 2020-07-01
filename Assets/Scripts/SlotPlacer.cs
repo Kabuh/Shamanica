@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlotMaker : MonoBehaviour
+public class SlotPlacer : MonoBehaviour
 {
 
-    public GameObject SlotPrefab;
-    public GameObject lowerRuler;
-    public GameObject upperRuler;
+    [SerializeField] private GameObject SlotPrefab;
+    [SerializeField] public GameObject lowerRuler;
+    [SerializeField] private GameObject upperRuler;
 
     public BattleGrid myGrid;
     public int gridRows;
@@ -68,7 +68,7 @@ public class SlotMaker : MonoBehaviour
                 cloneSlotEntity.myPlace = l+1;
                 cloneSlotEntity.side = this.side;
                 cloneSlotEntity.myGrid = this.myGrid;
-                cloneSlotEntity.Setup();
+                //cloneSlotEntity.Setup();
             }
         }
 

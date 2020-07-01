@@ -24,13 +24,16 @@ public class TurnComponent : MonoBehaviour
     public List<Hero> turnList = new List<Hero>();
 
     Hero currentTurnHero;
-    int classTurnCounter = 0;
+    public int classTurnCounter = 0;
 
     public GameObject gameOverTextGO;
     TextMeshProUGUI gameOverText;
 
     public int[] AllyIDHeroList = new int[8];
     public int[] EnemyIDHeroList = new int[8];
+
+    public int targetsAmount = 0;
+    int callbackCounter = 0;
 
     private void Awake()
     {
@@ -63,8 +66,8 @@ public class TurnComponent : MonoBehaviour
         SpawnChars(EnemyIDHeroList, TeamTwoGrid, out AIList);
         SortLists();
 
-        AIHandler.AIallies = TeamTwoGrid;
-        AIHandler.AIenemies = TeamOneGrid;
+        AIHandler.AIalliesGrid = TeamTwoGrid;
+        AIHandler.AIenemiesGrid = TeamOneGrid;
 
     }
 
@@ -83,7 +86,7 @@ public class TurnComponent : MonoBehaviour
 
                 GameObject character = Instantiate(
                     CharPrefab,
-                    new Vector3(currentGrid.Slots[index].xWorldPos, 0, currentGrid.Slots[index].zWorldPos),
+                    new Vector3(currentGrid.Slots[index].XworldPos, 4f, currentGrid.Slots[index].ZworldPos),
                     heroSpawnRotation
                     );
                 Hero currentHero = character.GetComponent<Hero>();
@@ -115,7 +118,7 @@ public class TurnComponent : MonoBehaviour
             else {
                 for (int i = 0; i < tempList.Count; i++)
                 {
-                    if (item.currentInitiative >= tempList[i].currentInitiative)
+                    if (item.CurrentInitiative >= tempList[i].CurrentInitiative)
                     {
                         index = i;
                         i = tempList.Count;
@@ -142,33 +145,34 @@ public class TurnComponent : MonoBehaviour
             return;
         }
 
-        currentTurnHero = turnList[classTurnCounter];
+        classTurnCounter++;
+        if (classTurnCounter > turnList.Count)
+        {
+            classTurnCounter = 1;
+        }
+
+        currentTurnHero = turnList[classTurnCounter-1];
+
         CurrentTurnIndicator.SetActive(true);
         Vector3 indicatorSetter = currentTurnHero.gameObject.transform.position;
         CurrentTurnIndicator.transform.position = new Vector3(indicatorSetter.x, 2, indicatorSetter.z);
+
         
 
-        if (currentTurnHero.mySlot.side == Affiliation.Ally) {
-            classTurnCounter++;
-            if (classTurnCounter >= turnList.Count)
-            {
-                classTurnCounter = 0;
-            }
-        } else 
-        {
-            AIHandler.ChooseBehaviour(currentTurnHero, AIList, PlayerList);
+        if (currentTurnHero.mySlot.side == Affiliation.Enemy) {
+            AIHandler.ChooseBehaviour(currentTurnHero, AIList, PlayerList, out targetsAmount);
+        }
+    }
 
-            classTurnCounter++;
-            if (classTurnCounter >= turnList.Count)
-            {
-                classTurnCounter = 0;
-            }
-
-            
-
+    public void CheckForNewTurn() {
+        callbackCounter++;
+        if (callbackCounter == targetsAmount) {
+            callbackCounter = 0;
             MakeGameTurn();
         }
     }
+
+
 
     //call for abstract methods of Buff/Attack based on character class
     public void MakeAction() {
@@ -177,12 +181,14 @@ public class TurnComponent : MonoBehaviour
 
             if (currentTurnHero?.mySlot.myGrid.side == Controller.Instance.ChosenHeroes[0].mySlot.myGrid.side)
             {
+                targetsAmount = Controller.Instance.ChosenHeroes.Count;
                 currentTurnHero.Buff(Controller.Instance.ChosenHeroes);
+
             }
             else {
+                targetsAmount = Controller.Instance.ChosenHeroes.Count;
                 currentTurnHero.Attack(Controller.Instance.ChosenHeroes);
             }
-            MakeGameTurn();
         }
     }
 
@@ -198,4 +204,5 @@ public class TurnComponent : MonoBehaviour
             AIList.Remove(hero);
         }
     }
+
 }

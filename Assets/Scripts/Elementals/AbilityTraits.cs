@@ -3,29 +3,28 @@
 //take any skill you want buffet
 public static class AbilityTraits
 {
+    static int callbackCounter;
+
     public static void Damage(int Damage, List<Hero> targets) {
+
         foreach (Hero item in targets) {
             if (item != null) {
-                item.currentHP = item.currentHP - Damage;
-                item.RefreshText();
-
-                if (item.currentHP <= 0)
-                {
-                    item.Death();
-                }
+                item.CurrentHP = item.CurrentHP - Damage;
+                item.AttackAnimate();
             }
         }
     }
 
     public static void Damage(int Damage, Hero item)
     {
-            item.currentHP = item.currentHP - Damage;
-            item.RefreshText();
+        item.CurrentHP = item.CurrentHP - Damage;
+        item.AttackAnimate();
+            
 
-            if (item.currentHP <= 0)
-            {
-                item.Death();
-            }
+        if (item.CurrentHP <= 0)
+        {
+            item.Death();
+        }
     }
 
 
@@ -33,13 +32,13 @@ public static class AbilityTraits
         foreach (Hero item in targets)
         {
             if (item != null) {
-                if (!item.hasHPBuff)
+                if (!item.HasHPBuff)
                 {
                     float buffAmmount = item.MaxHP * ((float)buffValue / 100);
-                    item.currentMaxHP += (int)buffAmmount;
-                    item.currentHP += (int)buffAmmount;
-                    item.RefreshText();
-                    item.hasHPBuff = true;
+                    item.CurrentMaxHP += (int)buffAmmount;
+                    item.CurrentHP += (int)buffAmmount;
+                    item.BuffAnimate();
+                    item.HasHPBuff = true;
                 }
             }
         }

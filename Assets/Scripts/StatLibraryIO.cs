@@ -1,27 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class StatLibraryIO : MonoBehaviour
+public class StatLibraryIO
 {
     public bool readComplete = false;
+    public MyWrapper wrapper = new MyWrapper();
 
-    public static StatLibraryIO Instance;
-    void Awake()
+    string path;
+    string jsonString;
+
+    #region Singleton
+    private static StatLibraryIO _instance;
+
+    public static StatLibraryIO Instance {
+        get {
+            if (_instance == null) {
+                _instance = new StatLibraryIO();
+            }
+            return _instance;
+        }
+    }
+    #endregion
+
+
+    public void Init()
     {
-        #region Singleton
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance == this)
-        { 
-            Destroy(gameObject); 
-        }
-        DontDestroyOnLoad(gameObject);
-        #endregion
-
         path = Application.dataPath + "/CharStats.json";
 
         ReadFile();
@@ -35,10 +39,7 @@ public class StatLibraryIO : MonoBehaviour
         public List<StatTable> CharData = new List<StatTable>();
     }
 
-    public MyWrapper wrapper = new MyWrapper();
 
-    string path;
-    string jsonString;
 
     void ReadFile() {
         jsonString = File.ReadAllText(path);
@@ -50,7 +51,7 @@ public class StatLibraryIO : MonoBehaviour
     void WriteFile() {
         StatTable testOne = new StatTable() {
             ElementID = 01,
-            name = "puk",
+            name = "puck",
             maxHP = 10,
             damage = 1,
             buff = 10,

@@ -6,11 +6,11 @@ public class FireElemental : Hero
 {
     public override void Attack(List<Hero> targets)
     {
-        AbilityTraits.Damage(currentDamage, targets);
+        AbilityTraits.Damage(CurrentDamage, targets);
     }
 
     public override void Buff(List<Hero> targets)
     {
-        AbilityTraits.HPBuff(buffAmount, targets);
+        AbilityTraits.HPBuff(BuffAmount, targets);
     }
 }

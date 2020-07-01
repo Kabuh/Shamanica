@@ -12,23 +12,30 @@ public abstract class Hero : MonoBehaviour
 
     public Slot mySlot;
 
-    private int maxHP;
+    private int defaultMaxHP;
     private int defaultInitialive;
     private int defaultDamage;
 
-    public int MaxHP { get => maxHP; }
+    public int MaxHP { get => defaultMaxHP; }
     public int DefaultInitialive { get => defaultInitialive; }
     public int DefaultDamage { get => defaultDamage; }
 
 
-    public int currentHP;
-    public int currentMaxHP;
-    public int currentInitiative;
-    public int currentDamage;
+    public int CurrentHP { get; set; }
+    public int CurrentMaxHP { get; set; }
+    public int CurrentInitiative { get; set; }
+    public int CurrentDamage { get; set; }
 
-    public int buffAmount;
+    public int BuffAmount;
+    public string TargetType = "cubical";
 
-    public bool hasHPBuff = false;
+    //
+    public bool HasHPBuff = false;
+
+
+    public GameObject mySprite;
+    public GameObject buffSprite;
+    public GameObject fireAttackSprite;
 
 
 
@@ -36,22 +43,34 @@ public abstract class Hero : MonoBehaviour
     {
         MyStatTable = StatLibraryIO.Instance.GetStatTableByID(HeroID);
 
-        currentHP = maxHP = currentMaxHP = MyStatTable.maxHP;
-        currentInitiative = defaultInitialive = MyStatTable.initiative;
-        currentDamage = defaultDamage = MyStatTable.damage;
+        CurrentHP = defaultMaxHP = CurrentMaxHP = MyStatTable.maxHP;
+        CurrentInitiative = defaultInitialive = MyStatTable.initiative;
+        CurrentDamage = defaultDamage = MyStatTable.damage;
 
-        buffAmount = MyStatTable.buff;
+        BuffAmount = MyStatTable.buff;
 
-        RefreshText();
+         RefreshText();
     }
 
     public void RefreshText()
     {
-        text.text = currentHP.ToString(); 
+        text.text = CurrentHP.ToString(); 
+    }
+
+    public void TextBuff() {
+        text.color = Color.green;
     }
 
     public abstract void Attack(List<Hero> targets);
     public abstract void Buff(List<Hero> targets);
+
+    public void BuffAnimate() {
+        AnimationsFX.Instance.AnimateSprite(buffSprite, this, false);
+    }
+
+    public void AttackAnimate() {
+        AnimationsFX.Instance.AnimateSprite(fireAttackSprite, this, true);
+    }
 
     public void Death() {
         TurnComponent.Instance.PurgeFromList(this);
